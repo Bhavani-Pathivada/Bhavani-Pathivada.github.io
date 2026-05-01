@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhavani Pathivada — Storage Administrator</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060810;
+    --surface: #0d1117;
+    --panel: #111827;
+    --border: rgba(99,202,255,0.12);
+    --accent: #63caff;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --glow: rgba(99,202,255,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ─── CANVAS BACKGROUND ─── */
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  /* ─── LAYOUT ─── */
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    backdrop-filter: blur(16px);
+    background: rgba(6,8,16,0.8);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 5rem;
+    position: relative;
+  }
+  .hero-content {
+    max-width: 700px;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 70%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.2rem;
+  }
+  .hero-role {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 1.8rem;
+    letter-spacing: 0.02em;
+  }
+  .hero-role span { color: var(--text); font-weight: 500; }
+  .hero-summary {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #94a3b8;
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+  }
+  .hero-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    font-weight: 700;
+  }
+  .btn-primary:hover {
+    background: #fff;
+    box-shadow: 0 0 30px rgba(99,202,255,0.4);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+  .btn-ghost:hover {
+    background: var(--glow);
+  }
+
+  /* ─── STATS STRIP ─── */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin: 5rem 0;
+    overflow: hidden;
+  }
+  .stat-item {
+    background: var(--surface);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: background 0.3s;
+  }
+  .stat-item:hover { background: var(--panel); }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.5rem;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ─── SECTION ─── */
+  section {
+    padding: 6rem 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    opacity: 0.7;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── SKILLS GRID ─── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.8rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.4s;
+  }
+  .skill-card:hover::before { transform: scaleY(1); }
+  .skill-card:hover {
+    border-color: var(--accent);
+    background: var(--panel);
+    box-shadow: 0 0 30px rgba(99,202,255,0.08);
+  }
+  .skill-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .skill-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    background: rgba(99,202,255,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(99,202,255,0.2);
+  }
+  .tag.purple {
+    background: rgba(167,139,250,0.08);
+    color: var(--accent2);
+    border-color: rgba(167,139,250,0.2);
+  }
+  .tag.green {
+    background: rgba(52,211,153,0.08);
+    color: var(--accent3);
+    border-color: rgba(52,211,153,0.2);
+  }
+
+  /* ─── EXPERIENCE ─── */
+  .exp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .exp-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(99,202,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.8rem;
+  }
+  .exp-role {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--text);
+  }
+  .exp-company {
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-top: 0.3rem;
+  }
+  .exp-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    background: var(--panel);
+    padding: 0.35rem 0.8rem;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .exp-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .exp-list li {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #94a3b8;
+    padding: 0.8rem 1rem;
+    background: var(--panel);
+    border-radius: 4px;
+    border-left: 2px solid transparent;
+    transition: all 0.3s;
+  }
+  .exp-list li:hover {
+    border-left-color: var(--accent);
+    background: rgba(99,202,255,0.05);
+    color: var(--text);
+  }
+  .exp-list li::before {
+    content: '▹';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  strong { color: var(--text); font-weight: 600; }
+
+  /* ─── STORAGE WORLD SECTION ─── */
+  .domain-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .domain-section h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .domain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .domain-block {
+    padding: 1.5rem;
+    background: var(--panel);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  .domain-block h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .domain-block p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #94a3b8;
+  }
+  .domain-block p strong { color: var(--accent3); }
+
+  /* ─── CANVAS MINI (SAN Diagram) ─── */
+  #san-canvas {
+    width: 100%;
+    height: 280px;
+    border-radius: 4px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    margin-top: 1.5rem;
+  }
+
+  /* ─── EDUCATION ─── */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .edu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.8rem;
+    transition: all 0.3s;
+  }
+  .edu-card:hover {
+    border-color: var(--accent2);
+    box-shadow: 0 0 20px rgba(167,139,250,0.08);
+  }
+  .edu-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+  }
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+  .edu-school {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    line-height: 1.4;
+  }
+  .edu-grade {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent3);
+  }
+
+  /* ─── CONTACT ─── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem 2rem;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .contact-item:hover {
+    border-color: var(--accent);
+    background: var(--panel);
+    transform: translateY(-2px);
+  }
+  .contact-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .contact-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .contact-value {
+    font-size: 0.92rem;
+    color: var(--text);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 0;
+    text-align: center;
+  }
+  .footer-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ─── CERT BADGE ─── */
+  .cert-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(99,202,255,0.1));
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 4px;
+    padding: 0.9rem 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .cert-badge .icon { font-size: 1.2rem; }
+  .cert-badge .cert-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent2);
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 700px) {
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .contact-grid { grid-template-columns: 1fr; }
+    .domain-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">BP // Storage</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#domains">Domains</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<div class="page">
+  <section id="hero" id="about">
+    <div class="hero-content">
+      <div class="hero-tag">Available for L2 Roles · Bengaluru, India</div>
+      <h1 class="hero-name">Bhavani<br>Pathivada</h1>
+      <p class="hero-role">
+        <span>Storage Administrator</span> · Senior Software Engineer
+      </p>
+      <p class="hero-summary">
+        3+ years managing enterprise SAN/NAS infrastructure at scale — 
+        <strong>31 storage devices</strong>, <strong>17 fabric switches</strong>, 
+        across IBM, HPE 3PAR/Alletra, and NetApp platforms. 
+        IBM AI Engineering certified, with a drive toward automation and deeper storage engineering.
+      </p>
+      <div class="hero-links">
+        <a href="#contact" class="btn btn-primary">Get in touch</a>
+        <a href="#experience" class="btn btn-ghost">View experience</a>
+      </div>
+      <div class="cert-badge">
+        <span class="icon">🏅</span>
+        <span class="cert-text">IBM AI Engineering Professional Certificate</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ STATS ═══ -->
+  <div class="stats-strip reveal">
+    <div class="stat-item">
+      <span class="stat-num">3+</span>
+      <span class="stat-label">Years Experience</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">31</span>
+      <span class="stat-label">Storage Devices</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">17</span>
+      <span class="stat-label">SAN Fabric Switches</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Enterprise Platforms</span>
+    </div>
+  </div>
+
+  <!-- ═══ SKILLS ═══ -->
+  <section id="skills">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Technical Arsenal</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <span class="skill-icon">🗄️</span>
+        <div class="skill-name">Storage Platforms</div>
+        <div class="skill-tags">
+          <span class="tag">IBM SVC</span>
+          <span class="tag">IBM Storwize</span>
+          <span class="tag">HPE 3PAR</span>
+          <span class="tag">HPE Alletra</span>
+          <span class="tag">NetApp ONTAP</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">🔌</span>
+        <div class="skill-name">Protocols</div>
+        <div class="skill-tags">
+          <span class="tag purple">Fibre Channel (FC)</span>
+          <span class="tag purple">iSCSI</span>
+          <span class="tag purple">NFS</span>
+          <span class="tag purple">CIFS/SMB</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">⚙️</span>
+        <div class="skill-name">Core Skills</div>
+        <div class="skill-tags">
+          <span class="tag green">SAN/NAS Admin</span>
+          <span class="tag green">LUN Provisioning</span>
+          <span class="tag green">Zoning</span>
+          <span class="tag green">RAID</span>
+          <span class="tag green">Multipathing</span>
+          <span class="tag green">Health Checks</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">🛠️</span>
+        <div class="skill-name">Tools & Monitoring</div>
+        <div class="skill-tags">
+          <span class="tag">PuTTY</span>
+          <span class="tag">PAM</span>
+          <span class="tag">NetApp Active IQ</span>
+          <span class="tag">IBM Storage GUI</span>
+          <span class="tag">HPE SSMC</span>
+          <span class="tag purple">Incident Mgmt</span>
+          <span class="tag purple">Capacity Planning</span>
+          <span class="tag purple">SLA Tracking</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ EXPERIENCE ═══ -->
+  <section id="experience">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Work Experience</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="exp-card reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Storage Administrator / Software Engineer</div>
+          <div class="exp-company">Capgemini</div>
+        </div>
+        <div class="exp-period">Oct 2022 – Present</div>
+      </div>
+      <ul class="exp-list">
+        <li>Performed daily health checks on <strong>31 storage devices</strong> (16 IBM, 5 HPE 3PAR, 5 NetApp) and <strong>17 SAN fabric switches</strong> via GUI and CLI, ensuring availability and performance across all platforms.</li>
+        <li>Verified remote copy and replication job status across IBM and HPE 3PAR platforms through both GUI and CLI, identifying failures or replication lag early to prevent data protection gaps.</li>
+        <li>Monitored <strong>NetApp Active IQ Unified Manager</strong> for warnings and alerts — triaging each to confirm genuine risk or false positive before escalation.</li>
+        <li>Prepared and delivered daily/weekly health check reports to managers and clients, covering capacity utilization, space availability trends, active alerts, and remediation recommendations.</li>
+        <li>Managed and resolved storage incidents within <strong>SLA timelines</strong>, troubleshooting availability and performance issues across Fibre Channel and iSCSI environments on IBM, HPE, and NetApp platforms.</li>
+        <li>Coordinated with cross-functional teams during incident bridges, providing storage-side diagnostics and real-time status updates to minimize production downtime.</li>
+        <li>Proactively flagged capacity risks and performance anomalies, enabling clients and management to plan remediation ahead of impact.</li>
+        <li>Maintained storage documentation including health check reports, incident logs, and runbooks to ensure operational continuity and audit readiness.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ DOMAIN DEEP DIVE ═══ -->
+  <section id="domains">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">The Storage World</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="domain-section reveal">
+      <h3>What I work with every day</h3>
+      <canvas id="san-canvas"></canvas>
+      <div class="domain-grid" style="margin-top:2rem">
+        <div class="domain-block">
+          <h4>SAN — Storage Area Network</h4>
+          <p>A dedicated high-speed network that connects servers to storage devices using <strong>Fibre Channel</strong> or <strong>iSCSI</strong> protocols. It presents storage as locally attached block devices to hosts — critical for databases, VMs, and latency-sensitive workloads. Zoning controls which hosts can see which storage ports.</p>
+        </div>
+        <div class="domain-block">
+          <h4>NAS — Network-Attached Storage</h4>
+          <p>File-level storage accessed over standard network protocols like <strong>NFS</strong> (Linux) and <strong>CIFS/SMB</strong> (Windows). NetApp ONTAP excels here — offering unified storage that serves both SAN and NAS from the same controllers, with rich data management features like SnapMirror replication.</p>
+        </div>
+        <div class="domain-block">
+          <h4>IBM SVC / Storwize</h4>
+          <p>IBM's <strong>SAN Volume Controller</strong> is a powerful virtualization layer that sits between servers and back-end storage. It enables thin provisioning, Easy Tier (automated tiering), FlashCopy snapshots, and Metro/Global Mirror replication — providing abstraction that makes storage hardware-agnostic to hosts.</p>
+        </div>
+        <div class="domain-block">
+          <h4>HPE 3PAR / Alletra</h4>
+          <p>HPE's flagship all-flash arrays built around a <strong>full mesh ASIC architecture</strong> — every node connects to every other, eliminating bottlenecks. Alletra is the cloud-native evolution: consumption-based, API-first, and integrated with HPE GreenLake for hybrid cloud storage management.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ EDUCATION ═══ -->
+  <section id="education">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Education</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-year">2022</div>
+        <div class="edu-degree">B.Tech – Electronics & Telecommunication Engineering</div>
+        <div class="edu-school">Rajiv Gandhi University of Knowledge Technologies (RGUKT), Nuzvid</div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-year">2018</div>
+        <div class="edu-degree">12th Standard</div>
+        <div class="edu-school">Andhra Pradesh Board (English Medium)</div>
+        <div class="edu-grade">Grade: 90.0%</div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-year">2016</div>
+        <div class="edu-degree">10th Standard</div>
+        <div class="edu-school">Andhra Pradesh Board (English Medium)</div>
+        <div class="edu-grade">Grade: 97.0%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Get In Touch</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid reveal">
+      <a href="mailto:bhavanipathivada2001@gmail.com" class="contact-item">
+        <span class="contact-icon">📧</span>
+        <div>
+          <span class="contact-label">Email</span>
+          <span class="contact-value">bhavanipathivada2001@gmail.com</span>
+        </div>
+      </a>
+      <a href="https://linkedin.com/in/bhavanipathivada-b00168249" target="_blank" class="contact-item">
+        <span class="contact-icon">💼</span>
+        <div>
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">linkedin.com/in/bhavanipathivada-b00168249</span>
+        </div>
+      </a>
+      <div class="contact-item" style="cursor:default">
+        <span class="contact-icon">📍</span>
+        <div>
+          <span class="contact-label">Location</span>
+          <span class="contact-value">Bengaluru, India</span>
+        </div>
+      </div>
+      <div class="contact-item" style="cursor:default">
+        <span class="contact-icon">🎯</span>
+        <div>
+          <span class="contact-label">Target Role</span>
+          <span class="contact-value">L2 Storage Administrator</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="page">
+    <p class="footer-text">Bhavani Pathivada · Storage Administrator · Built with care · 2025</p>
+  </div>
+</footer>
+
+<script>
+// ═══ BACKGROUND PARTICLE NETWORK ═══
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx = bgCanvas.getContext('2d');
+let W, H, particles = [], lines = [];
+
+function resizeBg() {
+  W = bgCanvas.width = window.innerWidth;
+  H = bgCanvas.height = window.innerHeight;
+}
+resizeBg();
+window.addEventListener('resize', resizeBg);
+
+function createParticles() {
+  particles = [];
+  const count = Math.floor((W * H) / 14000);
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 1.5 + 0.5,
+      alpha: Math.random() * 0.5 + 0.2
+    });
+  }
+}
+createParticles();
+window.addEventListener('resize', createParticles);
+
+function animateBg() {
+  bgCtx.clearRect(0, 0, W, H);
+
+  // Move and draw particles
+  for (const p of particles) {
+    p.x += p.vx;
+    p.y += p.vy;
+    if (p.x < 0) p.x = W;
+    if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H;
+    if (p.y > H) p.y = 0;
+
+    bgCtx.beginPath();
+    bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    bgCtx.fillStyle = `rgba(99,202,255,${p.alpha * 0.6})`;
+    bgCtx.fill();
+  }
+
+  // Draw connection lines
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        const alpha = (1 - dist / 120) * 0.15;
+        bgCtx.beginPath();
+        bgCtx.moveTo(particles[i].x, particles[i].y);
+        bgCtx.lineTo(particles[j].x, particles[j].y);
+        bgCtx.strokeStyle = `rgba(99,202,255,${alpha})`;
+        bgCtx.lineWidth = 0.6;
+        bgCtx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(animateBg);
+}
+animateBg();
+
+// ═══ SAN DIAGRAM ANIMATION ═══
+const sanCanvas = document.getElementById('san-canvas');
+const sCtx = sanCanvas.getContext('2d');
+
+function resizeSan() {
+  sanCanvas.width = sanCanvas.offsetWidth;
+  sanCanvas.height = sanCanvas.offsetHeight;
+}
+resizeSan();
+window.addEventListener('resize', resizeSan);
+
+const SAN = {
+  t: 0,
+  nodes: [],
+  packets: [],
+  init() {
+    const W = sanCanvas.width, H = sanCanvas.height;
+    const cx = W / 2, cy = H / 2;
+
+    // Center: SAN Switch
+    this.nodes = [
+      { label: 'SAN Switch 1', x: cx - 180, y: cy, color: '#63caff', type: 'switch', r: 22 },
+      { label: 'SAN Switch 2', x: cx + 180, y: cy, color: '#63caff', type: 'switch', r: 22 },
+      { label: 'IBM SVC', x: cx, y: cy - 100, color: '#a78bfa', type: 'storage', r: 18 },
+      { label: 'HPE 3PAR', x: cx + 90, y: cy + 80, color: '#a78bfa', type: 'storage', r: 18 },
+      { label: 'NetApp', x: cx - 90, y: cy + 80, color: '#a78bfa', type: 'storage', r: 18 },
+      { label: 'Server 1', x: cx - 300, y: cy - 60, color: '#34d399', type: 'server', r: 14 },
+      { label: 'Server 2', x: cx - 300, y: cy + 60, color: '#34d399', type: 'server', r: 14 },
+      { label: 'Server 3', x: cx + 300, y: cy - 60, color: '#34d399', type: 'server', r: 14 },
+      { label: 'Server 4', x: cx + 300, y: cy + 60, color: '#34d399', type: 'server', r: 14 },
+    ];
+
+    this.links = [
+      [0, 1], // switch to switch
+      [0, 2], [1, 2], // switches to IBM SVC
+      [0, 3], [1, 3], // switches to HPE
+      [0, 4], [1, 4], // switches to NetApp
+      [5, 0], [6, 0], // servers to sw1
+      [7, 1], [8, 1], // servers to sw2
+    ];
+
+    // Spawn packets
+    setInterval(() => {
+      const link = this.links[Math.floor(Math.random() * this.links.length)];
+      const from = this.nodes[link[0]];
+      const to = this.nodes[link[1]];
+      const forward = Math.random() > 0.5;
+      this.packets.push({
+        sx: forward ? from.x : to.x,
+        sy: forward ? from.y : to.y,
+        ex: forward ? to.x : from.x,
+        ey: forward ? to.y : from.y,
+        t: 0,
+        color: from.color,
+        speed: 0.015 + Math.random() * 0.02
+      });
+      if (this.packets.length > 30) this.packets.shift();
+    }, 250);
+  },
+  draw() {
+    const W = sanCanvas.width, H = sanCanvas.height;
+    sCtx.clearRect(0, 0, W, H);
+    this.t += 0.016;
+
+    // Links
+    for (const [a, b] of this.links) {
+      const na = this.nodes[a], nb = this.nodes[b];
+      sCtx.beginPath();
+      sCtx.moveTo(na.x, na.y);
+      sCtx.lineTo(nb.x, nb.y);
+      sCtx.strokeStyle = 'rgba(99,202,255,0.12)';
+      sCtx.lineWidth = 1.5;
+      sCtx.stroke();
+    }
+
+    // Packets
+    for (const p of this.packets) {
+      p.t = Math.min(1, p.t + p.speed);
+      const px = p.sx + (p.ex - p.sx) * p.t;
+      const py = p.sy + (p.ey - p.sy) * p.t;
+      sCtx.beginPath();
+      sCtx.arc(px, py, 3, 0, Math.PI * 2);
+      sCtx.fillStyle = p.color;
+      sCtx.shadowBlur = 8;
+      sCtx.shadowColor = p.color;
+      sCtx.fill();
+      sCtx.shadowBlur = 0;
+    }
+    this.packets = this.packets.filter(p => p.t < 1);
+
+    // Nodes
+    for (const n of this.nodes) {
+      // Glow
+      const grd = sCtx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 2.5);
+      grd.addColorStop(0, n.color + '30');
+      grd.addColorStop(1, 'transparent');
+      sCtx.beginPath();
+      sCtx.arc(n.x, n.y, n.r * 2.5, 0, Math.PI * 2);
+      sCtx.fillStyle = grd;
+      sCtx.fill();
+
+      // Node circle
+      sCtx.beginPath();
+      sCtx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      sCtx.fillStyle = '#0d1117';
+      sCtx.fill();
+      sCtx.strokeStyle = n.color;
+      sCtx.lineWidth = 2;
+      sCtx.stroke();
+
+      // Pulse ring
+      const pulse = (Math.sin(this.t * 2 + n.x * 0.01) + 1) / 2;
+      sCtx.beginPath();
+      sCtx.arc(n.x, n.y, n.r + 4 + pulse * 6, 0, Math.PI * 2);
+      sCtx.strokeStyle = n.color + Math.floor((1 - pulse) * 40).toString(16).padStart(2, '0');
+      sCtx.lineWidth = 1;
+      sCtx.stroke();
+
+      // Label
+      sCtx.fillStyle = n.color;
+      sCtx.font = '500 9px "DM Sans", sans-serif';
+      sCtx.textAlign = 'center';
+      sCtx.fillText(n.label, n.x, n.y + n.r + 13);
+    }
+
+    // Legend
+    const items = [
+      { color: '#34d399', label: 'Servers' },
+      { color: '#63caff', label: 'SAN Switches' },
+      { color: '#a78bfa', label: 'Storage Arrays' },
+    ];
+    items.forEach((item, i) => {
+      sCtx.beginPath();
+      sCtx.arc(14, H - 50 + i * 16, 4, 0, Math.PI * 2);
+      sCtx.fillStyle = item.color;
+      sCtx.fill();
+      sCtx.fillStyle = '#64748b';
+      sCtx.font = '9px "Space Mono", monospace';
+      sCtx.textAlign = 'left';
+      sCtx.fillText(item.label, 22, H - 46 + i * 16);
+    });
+
+    requestAnimationFrame(() => this.draw());
+  }
+};
+
+// Init SAN when visible
+const sanObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    resizeSan();
+    SAN.init();
+    SAN.draw();
+    sanObserver.disconnect();
+  }
+}, { threshold: 0.1 });
+sanObserver.observe(sanCanvas);
+
+// ═══ SCROLL REVEAL ═══
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = `${(i % 4) * 80}ms`;
+  revealObserver.observe(el);
+});
+
+// ═══ SMOOTH ACTIVE NAV ═══
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+  });
+});
+</script>
+</body>
+</html>
