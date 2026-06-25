@@ -536,6 +536,187 @@
   background-position:center;
   z-index:-1;
 }
+/* ==========================================
+   OPENING EXPERIENCE
+========================================== */
+
+#opening-scene{
+    position:fixed;
+    inset:0;
+
+    z-index:999999;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    overflow:hidden;
+
+    background:
+    radial-gradient(
+        circle at center,
+        #140d2c 0%,
+        #06020f 70%,
+        #020104 100%
+    );
+}
+
+#coverContainer{
+
+    position:relative;
+
+    width:min(90vw,520px);
+
+    perspective:2000px;
+}
+
+#closedCover{
+
+    width:100%;
+
+    display:block;
+
+    cursor:pointer;
+
+    filter:
+      drop-shadow(
+      0 25px 60px rgba(0,0,0,.5));
+
+    animation:
+      floatCover 5s ease-in-out infinite;
+}
+
+@keyframes floatCover{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+.tap-hint{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    color:#f5d77a;
+
+    font-size:.95rem;
+
+    letter-spacing:.08em;
+
+    animation:
+      pulseHint 2s infinite;
+}
+
+@keyframes pulseHint{
+
+    50%{
+        opacity:.5;
+    }
+}
+
+#openAnimation{
+
+    position:absolute;
+
+    inset:0;
+
+    opacity:0;
+
+    pointer-events:none;
+}
+
+#leftPage,
+#rightPage{
+
+    position:absolute;
+    top:0;
+
+    width:50%;
+    height:100%;
+
+    background:#0f1430;
+
+    overflow:hidden;
+
+    box-shadow:
+      0 0 20px rgba(0, 0, 0, 0.934);
+
+    backface-visibility:hidden;
+}
+
+#leftPage{
+    left:0;
+    width:49%;
+    transform-origin:left center;
+}
+
+#rightPage{
+    right:0;
+    width:49%;
+    transform-origin:right center;
+}
+
+#leftFlap,
+#rightFlap{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+#seal{
+
+    position:absolute;
+
+    left:50%;
+    top:58%;
+
+    width:90px;
+
+    transform:
+      translate(-50%,-50%);
+
+    z-index:20;
+}
+
+#tassel{
+
+    position:absolute;
+
+    left:50%;
+    top:65%;
+
+    width:90px;
+
+    transform:
+      translateX(-50%);
+
+    z-index:10;
+
+    animation:
+      tasselSwing 3s ease-in-out infinite;
+}
+
+@keyframes tasselSwing{
+
+    0%,100%{
+        transform:
+          translateX(-50%)
+          rotate(-4deg);
+    }
+
+    50%{
+        transform:
+          translateX(-50%)
+          rotate(4deg);
+    }
+}
 </style>
 </head>
 <body>
@@ -562,7 +743,48 @@
   -->
   <source src="bgm.mp3" type="audio/mpeg">
 </audio>
+<!-- OPENING EXPERIENCE -->
 
+<div id="opening-scene">
+
+    <div id="coverContainer">
+
+        <img
+            src="assets/cover.png"
+            id="closedCover"
+            alt="Wedding Invitation">
+
+        <div class="tap-hint">
+            ✦ Tap Invitation To Open ✦
+        </div>
+
+        <div id="openAnimation">
+
+          <div id="leftPage">
+    <img src="assets/cover-left.png" id="leftFlap">
+</div>
+
+<div id="rightPage">
+    <img src="assets/cover-right.png" id="rightFlap">
+</div>
+
+            <img
+                src="assets/seal.png"
+                id="seal"
+                alt="Seal">
+
+            <img
+                src="assets/tassel.png"
+                id="tassel"
+                alt="Tassel">
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="main-site" style="display:none;">
 <div class="page">
 
   <!-- ═══ HERO ═══ -->
@@ -699,7 +921,7 @@
   </section>
 
 </div><!-- .page -->
-
+</div>
 <script>
 /* ─── STAR FIELD ─── */
 (function(){
@@ -864,6 +1086,138 @@ const observer = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
 }, {threshold:0.12});
 document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+</script>
+<script>
+
+  const closedCover =
+document.getElementById('closedCover');
+
+const openAnimation =
+document.getElementById('openAnimation');
+
+const leftFlap =
+document.getElementById('leftFlap');
+
+const rightFlap =
+document.getElementById('rightFlap');
+
+const seal =
+document.getElementById('seal');
+
+const tassel =
+document.getElementById('tassel');
+
+const openingScene =
+document.getElementById('opening-scene');
+
+const mainSite =
+document.getElementById('main-site');
+
+closedCover.addEventListener(
+'click',
+async ()=>{
+
+    try{
+
+        await audio.play();
+
+    }catch(e){
+
+        console.log(e);
+
+    }
+
+    closedCover.style.transition =
+      'opacity .6s ease';
+
+    closedCover.style.opacity='0';
+
+    document.querySelector('.tap-hint')
+      .style.opacity='0';
+
+    openAnimation.style.opacity='1';
+
+    seal.animate(
+    [
+      {
+        transform:
+          'translate(-50%,-50%) scale(1)'
+      },
+      {
+        transform:
+          'translate(-50%,-50%) scale(1.15)'
+      },
+      {
+        transform:
+          'translate(-50%,-50%) scale(1)'
+      }
+    ],
+    {
+      duration:700
+    });
+
+    setTimeout(()=>{
+
+        seal.style.transition='.8s';
+        tassel.style.transition='.8s';
+
+        seal.style.opacity='0';
+        tassel.style.opacity='0';
+
+    },600);
+
+    setTimeout(()=>{
+
+       document.getElementById('leftPage').style.transition =
+'2.2s cubic-bezier(.2,.8,.2,1)';
+
+document.getElementById('rightPage').style.transition =
+'2.2s cubic-bezier(.2,.8,.2,1)';
+
+        document.getElementById('leftPage').style.transform =
+'rotateY(-170deg)';
+
+document.getElementById('rightPage').style.transform =
+'rotateY(170deg)';
+
+    },900);
+
+    setTimeout(()=>{
+
+        openingScene.style.transition =
+          'opacity 1.2s ease';
+
+        openingScene.style.opacity='0';
+
+    },3200);
+
+   setTimeout(()=>{
+
+    openingScene.remove();
+
+    mainSite.style.display='block';
+
+    document
+      .querySelector('.page')
+      ?.animate(
+      [
+        {
+          opacity:0,
+          transform:'scale(1.2) translateY(20px)'
+        },
+        {
+          opacity:1,
+          transform:'scale(1) translateY(0)'
+        }
+      ],
+      {
+        duration:1600,
+        easing:'cubic-bezier(.22,1,.36,1)',
+        fill:'forwards'
+      });
+
+},1200);
+});
 </script>
 </body>
 </html>
