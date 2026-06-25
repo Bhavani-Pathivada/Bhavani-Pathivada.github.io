@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta property="og:title"
+      content="Vibin Dave & Bhavani Pathivada Wedding">
+
+<meta property="og:description"
+      content="Join us as we celebrate our wedding on 30 August 2026">
+
+<meta property="og:image"
+      content="https://bhavani-pathivada.github.io/WeddingInvitation/preview-v2.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type"
+      content="website">
+    <meta property="og:image:type" content="image/jpeg">
+
+<meta property="og:url"
+      content="https://bhavani-pathivada.github.io/WeddingInvitation/">
+
+<meta name="twitter:card"
+      content="summary_large_image">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibin Dave & Bhavani Pathivada - Wedding Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --space-dark: #03010a;
+    --space-mid: #0a0520;
+    --space-blue: #0d1b4b;
+    --nebula-purple: #3b1f6e;
+    --nebula-pink: #7b2d8b;
+    --star-gold: #f5d77a;
+    --star-white: #e8eeff;
+    --accent-rose: #e8a0bf;
+    --accent-teal: #5ecfcf;
+    --text-main: #f0ecff;
+    --text-soft: #c5bde8;
+    --card-bg: rgba(15,8,40,0.75);
+    --card-border: rgba(180,140,255,0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--space-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── STAR CANVAS ── */
+  #star-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── AUDIO BAR ── */
+  #audio-bar {
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(20,10,50,0.85);
+    border: 1px solid var(--card-border);
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    backdrop-filter: blur(10px);
+  }
+  #audio-bar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--star-gold);
+    font-size: 1.4rem;
+    line-height: 1;
+    padding: 0;
+  }
+  #audio-bar span {
+    font-size: 0.72rem;
+    color: var(--text-soft);
+    letter-spacing: 0.04em;
+  }
+  #audio-note {
+    position: fixed;
+    bottom: 5rem;
+    right: 1.2rem;
+    z-index: 100;
+    background: rgba(20,10,50,0.9);
+    border: 1px solid var(--card-border);
+    border-radius: 1rem;
+    padding: 0.8rem 1.1rem;
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    max-width: 240px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+  }
+
+  /* ── WRAPPER ── */
+  .page { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    position: relative;
+  }
+
+  .ganesh-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 12px var(--star-gold));
+  }
+
+  .hero-eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--star-gold);
+    margin-bottom: 1.2rem;
+  }
+
+  .hero-names {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.6rem, 10vw, 5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    background: linear-gradient(135deg, #f5d77a, #e8a0bf, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    text-shadow: none;
+  }
+
+  .hero-connector {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-soft);
+    margin: 0.2rem 0;
+  }
+
+  .hero-date {
+    margin-top: 2rem;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    color: var(--star-white);
+    opacity: 0.85;
+  }
+
+  .scroll-hint {
+    margin-top: 3rem;
+    animation: bounce 2s ease-in-out infinite;
+    color: var(--text-soft);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .scroll-hint::after {
+    content: '↓';
+    font-size: 1.2rem;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  /* ── CHIBI SECTION ── */
+  #chibi-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1.5rem;
+    gap: 2rem;
+  }
+
+  .chibi-pair {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .chibi-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .chibi-label {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.1rem;
+    color: var(--accent-rose);
+  }
+
+  .chibi-hearts {
+    font-size: 2rem;
+    animation: heartbeat 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px #e8a0bf);
+    align-self: center;
+    padding-bottom: 1.5rem;
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+
+  /* ── SECTION COMMON ── */
+  .section {
+    padding: 3.5rem 1.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    color: var(--star-gold);
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+  }
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--star-gold), transparent);
+    margin: 0.5rem auto 0;
+  }
+
+  /* ── EVENT CARDS ── */
+  .event-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    margin-top: 1rem;
+  }
+
+  .event-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 1.2rem;
+    padding: 1.5rem;
+    backdrop-filter: blur(12px);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(120, 60, 220, 0.18);
+  }
+  .event-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    border-radius: 4px 0 0 4px;
+  }
+  .event-card.temple::before { background: linear-gradient(to bottom, #a78bfa, #7b2d8b); }
+  .event-card.lunch::before  { background: linear-gradient(to bottom, var(--star-gold), #e8a0bf); }
+
+  .event-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.6rem;
+  }
+  .event-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--star-white);
+    margin-bottom: 0.3rem;
+  }
+  .event-time {
+    font-size: 0.82rem;
+    color: var(--star-gold);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.6rem;
+  }
+  .event-venue {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+  }
+  .map-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(167,139,250,0.15);
+    border: 1px solid rgba(167,139,250,0.35);
+    border-radius: 2rem;
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem;
+    color: #c4b5fd;
+    text-decoration: none;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .map-btn:hover {
+    background: rgba(167,139,250,0.28);
+  }
+
+  /* ── DATE COUNTDOWN ── */
+  .countdown-box {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+  .countdown-unit {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 1rem;
+    padding: 1rem 0.5rem;
+    backdrop-filter: blur(8px);
+  }
+  .countdown-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    color: var(--star-gold);
+    display: block;
+  }
+  .countdown-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    display: block;
+    margin-top: 0.2rem;
+  }
+
+  /* ── FAMILIES ── */
+  .families-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-top: 1rem;
+  }
+  .family-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 1.2rem;
+    padding: 1.3rem 1rem;
+    backdrop-filter: blur(10px);
+    text-align: center;
+  }
+  .family-flag {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .family-place {
+    font-size: 0.72rem;
+    color: var(--accent-teal);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .family-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.92rem;
+    color: var(--star-white);
+    line-height: 1.4;
+  }
+  .family-sub {
+    font-size: 0.75rem;
+    color: var(--text-soft);
+    margin-top: 0.3rem;
+    line-height: 1.4;
+  }
+
+  /* ── CLOSING ── */
+  #closing {
+    padding: 3rem 1.5rem 5rem;
+    text-align: center;
+  }
+  .closing-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--text-soft);
+    max-width: 420px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.7;
+  }
+  .closing-names {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    background: linear-gradient(90deg, #f5d77a, #e8a0bf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .closing-sub {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-top: 0.5rem;
+  }
+
+  /* ── DIVIDER ── */
+  .star-divider {
+    text-align: center;
+    color: var(--star-gold);
+    font-size: 0.9rem;
+    letter-spacing: 0.5em;
+    padding: 1rem 0;
+    opacity: 0.5;
+  }
+
+  /* ── SHOOTING STAR ── */
+  .shooting-star {
+    position: fixed;
+    width: 2px;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, #f5d77a);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 0;
+    animation: shoot 1.2s linear forwards;
+    transform-origin: top center;
+  }
+  @keyframes shoot {
+    0%   { opacity: 1; transform: rotate(var(--angle)) translateY(0); }
+    100% { opacity: 0; transform: rotate(var(--angle)) translateY(200px); }
+  }
+
+  /* ── FADE IN ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 480px) {
+    .families-grid { grid-template-columns: 1fr; }
+    .countdown-box { grid-template-columns: repeat(2, 1fr); }
+    .chibi-hearts { display: none; }
+    .chibi-pair { gap: 0.8rem; }
+  }
+
+  #lotus-player{
+  position:fixed;
+  width:52px;
+  height:52px;
+  font-size:1.6rem;
+  top:14px;
+  right:14px;
+  opacity:.85;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:999;
+  background:rgba(15,8,40,.8);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,215,122,.3);
+  animation:lotusGlow 2s infinite ease-in-out;
+}
+
+@keyframes lotusGlow{
+  0%,100%{
+    transform:scale(1);
+  }
+  50%{
+    transform:scale(1.15);
+    filter:drop-shadow(0 0 15px #f5d77a);
+  }
+}
+
+#lotus-player.paused{
+  opacity:.55;
+  transform:scale(.9);
+  animation:none;
+}
+@media (max-width:480px){
+  #lotus-player{
+    width:46px;
+    height:46px;
+    font-size:1.4rem;
+    top:12px;
+    right:12px;
+  }
+}
+
+.ghibli-couple{
+  width:min(90%,550px);
+  border-radius:24px;
+  box-shadow:0 0 40px rgba(245,215,122,.25);
+}
+
+.hero-bg{
+  position:absolute;
+  inset:0;
+  background:
+  linear-gradient(
+    rgba(0,0,0,.45),
+    rgba(0,0,0,.55)
+  ),
+  url('ghibli-bg.jpg');
+  background-size:cover;
+  background-position:center;
+  z-index:-1;
+}
+/* ==========================================
+   OPENING EXPERIENCE
+========================================== */
+
+#opening-scene{
+    position:fixed;
+    inset:0;
+
+    z-index:999999;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    overflow:hidden;
+
+    background:
+    radial-gradient(
+        circle at center,
+        #140d2c 0%,
+        #06020f 70%,
+        #020104 100%
+    );
+}
+
+#coverContainer{
+
+    position:relative;
+
+    width:min(90vw,520px);
+
+    perspective:2000px;
+}
+
+#closedCover{
+
+    width:100%;
+
+    display:block;
+
+    cursor:pointer;
+
+    filter:
+      drop-shadow(
+      0 25px 60px rgba(0,0,0,.5));
+
+    animation:
+      floatCover 5s ease-in-out infinite;
+}
+
+@keyframes floatCover{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+.tap-hint{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    color:#f5d77a;
+
+    font-size:.95rem;
+
+    letter-spacing:.08em;
+
+    animation:
+      pulseHint 2s infinite;
+}
+
+@keyframes pulseHint{
+
+    50%{
+        opacity:.5;
+    }
+}
+
+#openAnimation{
+
+    position:absolute;
+
+    inset:0;
+
+    opacity:0;
+
+    pointer-events:none;
+}
+
+#leftPage,
+#rightPage{
+
+    position:absolute;
+    top:0;
+
+    width:50%;
+    height:100%;
+
+    background:#0f1430;
+
+    overflow:hidden;
+
+    box-shadow:
+      0 0 20px rgba(0, 0, 0, 0.934);
+
+    backface-visibility:hidden;
+}
+
+#leftPage{
+    left:0;
+    transform-origin:left center;
+}
+
+#rightPage{
+    right:0;
+    transform-origin:right center;
+}
+
+#leftFlap,
+#rightFlap{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+#seal{
+
+    position:absolute;
+
+    left:50%;
+    top:58%;
+
+    width:90px;
+
+    transform:
+      translate(-50%,-50%);
+
+    z-index:20;
+}
+
+#tassel{
+
+    position:absolute;
+
+    left:50%;
+    top:65%;
+
+    width:90px;
+
+    transform:
+      translateX(-50%);
+
+    z-index:10;
+
+    animation:
+      tasselSwing 3s ease-in-out infinite;
+}
+
+@keyframes tasselSwing{
+
+    0%,100%{
+        transform:
+          translateX(-50%)
+          rotate(-4deg);
+    }
+
+    50%{
+        transform:
+          translateX(-50%)
+          rotate(4deg);
+    }
+}
+</style>
+</head>
+<body>
+
+<canvas id="star-canvas"></canvas>
+
+<div id="audio-note">
+  🪷 Tap the Lotus once if your browser blocks autoplay
+</div>
+
+<!-- Audio controls -->
+<div id="lotus-player" onclick="toggleAudio()">
+  🪷
+</div>
+
+<!-- Hidden audio element — user must supply their own MP3 -->
+<audio id="bgm" loop>
+  <!--
+    To add your BGM:
+    1. Download your chosen song as an MP3 (e.g., "Kalyaana Maalai" from Thirumanam Enum Nikkah)
+    2. Rename it to bgm.mp3
+    3. Place bgm.mp3 in the same folder as index.html
+    4. GitHub Pages will serve it automatically
+  -->
+  <source src="bgm.mp3" type="audio/mpeg">
+</audio>
+<!-- OPENING EXPERIENCE -->
+
+<div id="opening-scene">
+
+    <div id="coverContainer">
+
+        <img
+            src="assets/cover.png"
+            id="closedCover"
+            alt="Wedding Invitation">
+
+        <div class="tap-hint">
+            ✦ Tap Invitation To Open ✦
+        </div>
+
+        <div id="openAnimation">
+
+          <div id="leftPage">
+    <img src="assets/cover-left.png" id="leftFlap">
+</div>
+
+<div id="rightPage">
+    <img src="assets/cover-right.png" id="rightFlap">
+</div>
+
+            <img
+                src="assets/seal.png"
+                id="seal"
+                alt="Seal">
+
+            <img
+                src="assets/tassel.png"
+                id="tassel"
+                alt="Tassel">
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="main-site" style="display:none;">
+<div class="page">
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <div class="ganesh-icon">🕉️</div>
+    <p class="hero-eyebrow">You are cordially invited</p>
+    <div class="hero-names">Vibin Dave</div>
+    <div class="hero-connector">&amp; </div>
+    <div class="hero-names">Bhavani Pathivada</div>
+    <p class="hero-date">Sunday, 30 August 2026 &nbsp;·&nbsp; Guruvayur</p>
+    <div class="scroll-hint">✨ Begin the Journey</div>
+  </section>
+
+  <!-- ═══ CHIBI COUPLE ═══ -->
+ <section id="chibi-section" class="fade-in">
+
+  <h2 class="section-title">
+    Our Story
+  </h2>
+
+  <p
+    style="
+      font-size:.9rem;
+      color:var(--text-soft);
+      max-width:500px;
+      line-height:1.7;
+      text-align:center;
+    ">
+    From Kerala and Andhra Pradesh,
+    two hearts found each other and are now
+    beginning a beautiful journey together.
+  </p>
+
+  <img
+    src="ghibli-couple.png"
+    alt="Vibin and Bhavani"
+    class="ghibli-couple">
+
+</section></section>
+
+  <div class="star-divider">✦ ✦ ✦</div>
+
+  <!-- ═══ COUNTDOWN ═══ -->
+  <section class="section fade-in">
+    <h2 class="section-title">Counting the Stars</h2>
+    <p style="font-size:0.85rem; color:var(--text-soft);">until the big day</p>
+    <div class="countdown-box" id="countdown-box">
+      <div class="countdown-unit"><span class="countdown-num" id="cd-days">--</span><span class="countdown-label">Days</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-hours">--</span><span class="countdown-label">Hours</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-mins">--</span><span class="countdown-label">Mins</span></div>
+      <div class="countdown-unit"><span class="countdown-num" id="cd-secs">--</span><span class="countdown-label">Secs</span></div>
+    </div>
+  </section>
+
+  <div class="star-divider">✦ ✦ ✦</div>
+
+  <!-- ═══ EVENTS ═══ -->
+  <section class="section fade-in">
+    <h2 class="section-title">Celestial Events</h2>
+    <div class="event-cards">
+
+      <div class="event-card temple">
+        <div class="event-icon">🛕</div>
+        <div class="event-name">Thalikettu — Wedding Ceremony</div>
+        <div class="event-time">Sunday, 30 August 2026 &nbsp;·&nbsp; Muhurtham: 8:00 AM – 9:00 AM</div>
+        <div class="event-venue">
+          Guruvayur Sreekrishna Temple<br>
+          <span style="font-size:0.8rem; color:var(--text-soft);">Guruvayur, Kerala</span>
+        </div>
+        <a href="https://maps.app.goo.gl/eYjxXjzJVzQMG8GJ9" target="_blank" rel="noopener" class="map-btn">
+          📍 View on Maps
+        </a>
+      </div>
+
+  <div class="event-card lunch">
+  <div class="event-icon">✨</div>
+  <div class="event-name">Wedding Celebration & Lunch</div>
+  <div class="event-time">
+    Sunday, 30 August 2026 &nbsp;·&nbsp; 12:00 PM Onwards
+  </div>
+  <div class="event-venue">
+    Souhrudha Auditorium<br>
+    <span style="font-size:0.8rem; color:var(--text-soft);">
+      Koonathara
+    </span>
+  </div>
+  <a href="https://maps.app.goo.gl/4CysYvHd6gxAVWDh8"
+     target="_blank"
+     rel="noopener"
+     class="map-btn">
+    📍 View on Maps
+  </a>
+</div>
+
+    </div>
+  </section>
+
+  <div class="star-divider">✦ ✦ ✦</div>
+
+  <!-- ═══ FAMILIES ═══ -->
+  <section class="section fade-in">
+    <h2 class="section-title">Blessed by Two Families</h2>
+    <div class="families-grid">
+      <div class="family-card">
+        <div class="family-flag">🌴</div>
+        <div class="family-place">Kerala, India</div>
+        <div class="family-name">Mr. T. P. Devanandan<br>&amp; Mrs. K. Geethamani</div>
+        <div class="family-sub">Thozhuthuparambil House, Koonathara</div>
+        <div style="margin-top:0.7rem; font-size:0.8rem; color:var(--star-gold);">Parents of the Groom</div>
+      </div>
+      <div class="family-card">
+        <div class="family-flag">🌺</div>
+        <div class="family-place">Andhra Pradesh, India</div>
+        <div class="family-name">Mr. Pathivada Venkataramana<br>&amp; Mrs. Pathivada Appalakonda</div>
+        <div class="family-sub">Vijayanagaram, Andhra Pradesh</div>
+        <div style="margin-top:0.7rem; font-size:0.8rem; color:var(--accent-rose);">Parents of the Bride</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="star-divider">✦ ✦ ✦</div>
+
+  <!-- ═══ CLOSING ═══ -->
+  <section id="closing" class="fade-in">
+    <div style="font-size:2.5rem; margin-bottom:1rem; filter:drop-shadow(0 0 12px var(--accent-rose));">💫</div>
+    <p class="closing-quote">
+      "Two stars from different galaxies, destined to orbit together — forever."
+    </p>
+    <div class="closing-names">Vibin &amp; Bhavani</div>
+    <p class="closing-sub">30 · 08 · 2026 &nbsp;·&nbsp; Guruvayur</p>
+    <p style="margin-top:2rem; font-size:0.78rem; color:var(--text-soft); letter-spacing:0.08em;">
+      With love &amp; blessings &nbsp;·&nbsp; Family &amp; Friends
+    </p>
+  </section>
+
+</div><!-- .page -->
+</div>
+<script>
+/* ─── STAR FIELD ─── */
+(function(){
+  const canvas = document.getElementById('star-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [];
+
+  function resize(){
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for(let i=0;i<280;i++){
+    stars.push({
+      x: Math.random()*2000,
+      y: Math.random()*3000,
+      r: Math.random()*1.4+0.3,
+      a: Math.random(),
+      da: (Math.random()-0.5)*0.005,
+      color: ['#f5d77a','#e8eeff','#c4b5fd','#5ecfcf','#e8a0bf'][Math.floor(Math.random()*5)]
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const scrollY = window.scrollY || 0;
+    stars.forEach(s=>{
+      s.a += s.da;
+      if(s.a<=0||s.a>=1) s.da*=-1;
+      const sx = (s.x % W);
+      const sy = (s.y - scrollY*0.15) % (H*3);
+      if(sy<-10||sy>H+10) return;
+      ctx.globalAlpha = Math.abs(s.a);
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(sx, sy, s.r, 0, Math.PI*2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  /* shooting stars */
+  function launchStar(){
+    const el = document.createElement('div');
+    el.className = 'shooting-star';
+    el.style.left = Math.random()*80+10+'vw';
+    el.style.top  = Math.random()*30+'vh';
+    el.style.setProperty('--angle', (Math.random()*40+30)+'deg');
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 1400);
+  }
+  launchStar();
+  setInterval(launchStar, 4000);
+})();
+
+/* ─── COUNTDOWN ─── */
+function updateCountdown(){
+  const target = new Date('2026-08-30T08:00:00+05:30');
+  const now = new Date();
+  const diff = target - now;
+  if(diff<=0){
+    document.getElementById('cd-days').textContent='🎉';
+    document.getElementById('cd-hours').textContent='🎉';
+    document.getElementById('cd-mins').textContent='🎉';
+    document.getElementById('cd-secs').textContent='🎉';
+    return;
+  }
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* ─── AUDIO ─── */
+/* ─── LOTUS AUDIO ─── */
+
+const audio = document.getElementById('bgm');
+const lotus = document.getElementById('lotus-player');
+const note = document.getElementById('audio-note');
+
+let playing = false;
+
+async function startMusic(){
+  try{
+    await audio.play();
+
+    audio.muted = false;
+
+    playing = true;
+
+    note.style.display = 'none';
+
+    lotus.classList.remove('paused');
+
+  }catch(err){
+    console.log('Autoplay blocked');
+  }
+}
+
+window.addEventListener('load', startMusic);
+
+document.addEventListener('click', () => {
+
+  if(!playing){
+
+    audio.muted = false;
+
+    startMusic();
+  }
+
+},{ once:true });
+
+function toggleAudio(){
+
+  if(playing){
+
+    audio.pause();
+
+    lotus.classList.add('paused');
+
+    playing = false;
+
+  }else{
+
+    audio.play();
+
+    lotus.classList.remove('paused');
+
+    playing = true;
+  }
+}
+
+setTimeout(() => {
+
+  note.style.opacity = '0';
+
+  note.style.transition = '1s';
+
+  setTimeout(() => {
+
+    note.style.display = 'none';
+
+  },1000);
+
+},8000);
+
+/* hide note after 6s */
+setTimeout(()=>{ note.style.opacity='0'; note.style.transition='opacity 1s'; setTimeout(()=>note.style.display='none',1000); }, 6000);
+
+/* ─── FADE IN ON SCROLL ─── */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:0.12});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+</script>
+<script>
+
+  const closedCover =
+document.getElementById('closedCover');
+
+const openAnimation =
+document.getElementById('openAnimation');
+
+const leftFlap =
+document.getElementById('leftFlap');
+
+const rightFlap =
+document.getElementById('rightFlap');
+
+const seal =
+document.getElementById('seal');
+
+const tassel =
+document.getElementById('tassel');
+
+const openingScene =
+document.getElementById('opening-scene');
+
+const mainSite =
+document.getElementById('main-site');
+
+closedCover.addEventListener(
+'click',
+async ()=>{
+
+    try{
+
+        await audio.play();
+
+    }catch(e){
+
+        console.log(e);
+
+    }
+
+    closedCover.style.transition =
+      'opacity .6s ease';
+
+    closedCover.style.opacity='0';
+
+    document.querySelector('.tap-hint')
+      .style.opacity='0';
+
+    openAnimation.style.opacity='1';
+
+    seal.animate(
+    [
+      {
+        transform:
+          'translate(-50%,-50%) scale(1)'
+      },
+      {
+        transform:
+          'translate(-50%,-50%) scale(1.15)'
+      },
+      {
+        transform:
+          'translate(-50%,-50%) scale(1)'
+      }
+    ],
+    {
+      duration:700
+    });
+
+    setTimeout(()=>{
+
+        seal.style.transition='.8s';
+        tassel.style.transition='.8s';
+
+        seal.style.opacity='0';
+        tassel.style.opacity='0';
+
+    },600);
+
+    setTimeout(()=>{
+
+       document.getElementById('leftPage').style.transition =
+'2.2s cubic-bezier(.2,.8,.2,1)';
+
+document.getElementById('rightPage').style.transition =
+'2.2s cubic-bezier(.2,.8,.2,1)';
+
+        document.getElementById('leftPage').style.transform =
+'rotateY(-170deg)';
+
+document.getElementById('rightPage').style.transform =
+'rotateY(170deg)';
+
+    },900);
+
+    setTimeout(()=>{
+
+        openingScene.style.transition =
+          'opacity 1.2s ease';
+
+        openingScene.style.opacity='0';
+
+    },3200);
+
+    setTimeout(()=>{
+
+        openingScene.remove();
+
+        mainSite.style.display='block';
+
+        document
+          .querySelector('.page')
+          ?.animate(
+          [
+            {
+              opacity:0,
+              transform:'translateY(40px)'
+            },
+            {
+              opacity:1,
+              transform:'translateY(0)'
+            }
+          ],
+          {
+            duration:1200,
+            fill:'forwards'
+          });
+
+    },1200);
+
+});
+</script>
+</body>
+</html>
